@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,18 @@ public class OntologyController {
       throw new ResourceNotFoundException(
           "Ontology was not found by provided ontologyId :" + ontologyId.get());
     }
-    throw new ResourceNotFoundException("Invalid Ontology Id was found");
+    throw new ResourceNotFoundException("Invalid Ontology Id found");
+  }
+
+
+  @PutMapping("/ontologies/{ontologyId}")
+  public ResponseEntity<OntologyModel> updateOntology(@RequestBody OntologyModel newOntologyData,
+      @PathVariable Optional<String> ontologyId) throws ResourceNotFoundException {
+    if (ontologyId.isPresent()) {
+      OntologyModel ontologyDocument = ontologyService.update(newOntologyData, ontologyId.get());
+      return new ResponseEntity<OntologyModel>(ontologyDocument, HttpStatus.OK);
+    }
+    throw new ResourceNotFoundException("Invalid Ontology Id found");
   }
 
 

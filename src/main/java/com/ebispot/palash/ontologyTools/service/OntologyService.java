@@ -29,4 +29,5 @@ public interface OntologyService {
    */
   public OntologyModel save(OntologyModel ontologyDocument) throws OLSToolsRunTimeException;
 
+  public OntologyModel update(OntologyModel newOntologyData, String ontologyId);
 }

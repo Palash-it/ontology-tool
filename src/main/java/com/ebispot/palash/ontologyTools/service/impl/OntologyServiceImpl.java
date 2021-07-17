@@ -27,7 +27,7 @@ public class OntologyServiceImpl implements OntologyService {
   private boolean isOLSEnabled;
 
   @Override
-  public OntologyModel findOntologyByOntologyId(String ontologyId){
+  public OntologyModel findOntologyByOntologyId(String ontologyId) {
     OntologyModel ontologyDocument = ontologyRepository.findByOntologyId(ontologyId);
     if (ontologyDocument != null) {
       logger.info("Ontology found into local database");
@@ -56,5 +56,14 @@ public class OntologyServiceImpl implements OntologyService {
     return ontologyRepository.save(ontologyDocument);
   }
 
-
+  @Override
+  public OntologyModel update(OntologyModel newOntologyData, String ontologyId) {
+    OntologyModel ontologyDocument = ontologyRepository.findByOntologyId(ontologyId);
+    if (ontologyDocument == null)
+      return ontologyRepository.save(newOntologyData);
+    ontologyDocument.setMessage(newOntologyData.getMessage());
+    ontologyDocument.setStatus(newOntologyData.getStatus());
+    ontologyDocument.setConfig(newOntologyData.getConfig());
+    return ontologyRepository.save(ontologyDocument);
+  }
 }
